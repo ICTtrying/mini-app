@@ -4,6 +4,8 @@
   "functions": {
     "api/index.php": { "runtime": "vercel-php@0.6.0" }
   },
+  
+  "buildCommand": "composer install --no-dev --optimize-autoloader && npm run build",
   "routes": [
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
