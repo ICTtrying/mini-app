@@ -20,15 +20,12 @@
         <flux:spacer />
 
         <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-            <flux:tooltip :content="__('Search')" position="bottom">
-                <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#"
-                    :label="__('Search')" />
-            </flux:tooltip>
-
-            <flux:tooltip :content="__('Documentation')" position="bottom">
-                <flux:navbar.item class="h-10 max-lg:hidden [&>div>svg]:size-5" icon="book-open-text"
-                    href="https://laravel.com/docs/starter-kits#livewire" target="_blank" label="Documentation" />
-            </flux:tooltip>
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow hover:shadow-lg transform hover:-translate-y-0.5 transition-all" wire:navigate aria-label="Go to Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+                <span>Go to Dashboard</span>
+            </a>
         </flux:navbar>
 
         <!-- Desktop User Menu -->
