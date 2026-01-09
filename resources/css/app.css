@@ -64,3 +64,59 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+.takenmakenform {
+    position: relative;
+    width: auto; 
+    height: auto; 
+    margin: 0 auto;
+    border-radius: 15px; 
+    padding: 10px; 
+    margin-top: 80px;
+    background-color: rgb(68, 68, 68);
+}
+
+.takenmakenform:after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    background: linear-gradient(to right, #4f46e5, #9333ea);
+    border-radius: 15px;
+    z-index: -1;
+}
+
+.dashboardButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: rgb(68, 68, 68);
+    border: 1px solid transparent;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 150ms ease-in-out;
+}
+
+.dashboardButton:hover {
+    background-color: #374151;
+}
+
+.dashboardButton:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #4f46e5, #9333ea);
+    border-radius: 15px;
+    z-index: -1;
+}
+

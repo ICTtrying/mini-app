@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Taken;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -22,6 +23,10 @@ Route::view('Week', 'Week')
 Route::view('Alles', 'Alles')
     ->middleware(['auth', 'verified'])
     ->name('Alles');
+
+Route::get('/takenMaken', [Taken::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('takenMaken');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

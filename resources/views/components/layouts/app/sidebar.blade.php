@@ -15,49 +15,38 @@
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('filter')" class="grid">
-                <flux:navlist.item class="mb-3" :href="route('dashboard')"
-                    :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Vandaag') }}</flux:navlist.item>
+                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
+                    wire:navigate>{{ __('Vandaag') }}</flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('Week')"
-                    :current="request()->routeIs('Week')" wire:navigate>{{ __('Week') }}</flux:navlist.item>
+                <flux:navlist.item class="mb-3" :href="route('Week')" :current="request()->routeIs('Week')"
+                    wire:navigate>{{ __('Week') }}</flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('Alles')"
-                    :current="request()->routeIs('Alles')" wire:navigate>{{ __('Alles') }}</flux:navlist.item>
+                <flux:navlist.item class="mb-3" :href="route('Alles')" :current="request()->routeIs('Alles')"
+                    wire:navigate>{{ __('Alles') }}</flux:navlist.item>
 
             </flux:navlist.group>
 
             <flux:navlist.group :heading="__('Catogorien')" class="grid">
-                <flux:navlist.item class="mb-3" :href="route('dashboard')"
-                    :current="request()->routeIs('School')" wire:navigate>{{ __('School') }}</flux:navlist.item>
+                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('School')"
+                    wire:navigate>{{ __('School') }}</flux:navlist.item>
+
+                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('Werk')"
+                    wire:navigate>{{ __('Werk') }}</flux:navlist.item>
 
                 <flux:navlist.item class="mb-3" :href="route('dashboard')"
-                    :current="request()->routeIs('Werk')" wire:navigate>{{ __('Werk') }}</flux:navlist.item>
+                    :current="request()->routeIs('Side-projecten')" wire:navigate>{{ __('Side-projecten') }}
+                </flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('dashboard')"
-                    :current="request()->routeIs('Side-projecten')" wire:navigate>{{ __('Side-projecten') }}</flux:navlist.item>
-
-                <flux:navlist.item class="mb-3" :href="route('dashboard')"
-                    :current="request()->routeIs('Privé')" wire:navigate>{{ __('Privé') }}</flux:navlist.item>
+                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('Privé')"
+                    wire:navigate>{{ __('Privé') }}</flux:navlist.item>
             </flux:navlist.group>
 
         </flux:navlist>
 
         <flux:spacer />
 
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
-                target="_blank">
-                {{ __('Repository') }}
-            </flux:navlist.item>
-
-            <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire"
-                target="_blank">
-                {{ __('Documentation') }}
-            </flux:navlist.item>
-        </flux:navlist>
-
         <!-- Desktop User Menu -->
-        <flux:dropdown class="hidden lg:block" position="bottom" align="start">
+        <flux:dropdown class="block" position="bottom" align="start">
             <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
                 icon:trailing="chevrons-up-down" />
 
@@ -106,7 +95,8 @@
         <flux:spacer />
 
         <flux:dropdown position="top" align="end">
-            <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
+            <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
+                icon-trailing="chevron-down" />
 
             <flux:menu>
                 <flux:menu.radio.group>
