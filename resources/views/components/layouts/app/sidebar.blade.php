@@ -15,14 +15,14 @@
 
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('filter')" class="grid">
-                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
+                <flux:navlist.item class="mb-3" :href="route('Alles')" :current="request()->routeIs('dashboard')"
+                    wire:navigate>{{ __('Alles') }}</flux:navlist.item>
+
+                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('vandaag')"
                     wire:navigate>{{ __('Vandaag') }}</flux:navlist.item>
 
                 <flux:navlist.item class="mb-3" :href="route('Week')" :current="request()->routeIs('Week')"
                     wire:navigate>{{ __('Week') }}</flux:navlist.item>
-
-                <flux:navlist.item class="mb-3" :href="route('Alles')" :current="request()->routeIs('Alles')"
-                    wire:navigate>{{ __('Alles') }}</flux:navlist.item>
 
             </flux:navlist.group>
 
