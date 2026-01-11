@@ -197,6 +197,164 @@ select:focus[data-flux-control] {
     background-color: #374151;
 }
 
+#dashboardTaskViewContainer {
+    height: 300px;
+    background-color: #3e3e3e;
+    position: relative;
+    width: 100%;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#dashboardTaskViewContainer>h2 {
+    position: relative;
+    font-size: 30px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+#dashboardTaskViewContainer>h2::after {
+    content: '';
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+    background: linear-gradient(to right, #4f46e5, #9333ea);
+    box-shadow: 0 0 8px 2px rgba(79,70,229,0.5), 0 0 16px 4px rgba(147,51,234,0.3);
+
+}
+.dark #dashboardTaskViewContainer {
+    border-color: #404040; /* neutral-700 */
+}
+
+#taakContainerKlaar {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background: linear-gradient(to bottom, #1d1a51 0%, #321151 100%);
+}
+
+#taakContainerNietKlaar {
+    opacity: 0.6;
+    position: relative;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background: linear-gradient(to bottom, #1d1a51 0%, #321151 100%);
+}
+
+
+/*niet klaar*/
+#taakContainerNietKlaar>#checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4f46e5;
+    margin-right: 10px;
+    border-radius: 6px;
+    background: #2f2f2f;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+
+}
+#taakContainerNietKlaar>#checkbox:checked {
+    background: #4f46e5;
+    border-color: #9333ea;
+}
+#taakContainerNietKlaar>#checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+#taakContainerNietKlaar>#titel {
+    font-weight: bolder;
+    font-size: larger;
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+}
+
+.taak-container {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background: linear-gradient(to bottom, #1d1a51 0%, #321151 100%);
+}
+
+.taak-container.niet-klaar {
+    opacity: 0.6;
+}
+
+.taak-container .checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4f46e5;
+    margin-right: 10px;
+    border-radius: 6px;
+    background: #2f2f2f;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+}
+
+.taak-container .checkbox:checked {
+    background: #4f46e5;
+    border-color: #9333ea;
+}
+
+.taak-container .checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.taak-container .titel {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.taak-container.niet-klaar .titel {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+}
+
+.taak-container .type {
+    margin-bottom: 20px;
+    padding: 4px;
+    border-radius: 10px;
+    background-color: #5d5d5d;
+    font-size: small;
+    float: right;
+}
+
+.taak-container .deadline {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+
+
 @media (max-width: 550px) {
     .takenmakenform>input {
         width: 95%;

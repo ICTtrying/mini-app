@@ -4,13 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Taken;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //kleuren en berichten --------------------------------------------------------
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
         $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
         $kleuren = [
             'rgba(79, 70, 229, 0.5)',      // Indigo
@@ -24,25 +38,56 @@ class DashboardController extends Controller
         ];
         $gekozenKleur = $kleuren[array_rand($kleuren)];
         $gekozenBericht = $berichten[array_rand($berichten)];
-        //einde kleuren en berichten --------------------------------------------------
+        // einde kleuren en berichten --------------------------------------------------
 
+        // alle taken
+        $taken = Taken::where('user_id', Auth::id())
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
 
-        //alle taken
-        $taken = Taken::where('user_id', Auth::id())->get();
-
-        //alle taken die in de laatste week op klaar staan
+        // Format deadlines for each taak
+        foreach ($taken as $taak) {
+            if ($taak->deadline) {
+                $taak->deadline = \Carbon\Carbon::parse($taak->deadline)->format('Y-m-d');
+            }
+        }
+        // alle taken die in de laatste week op klaar staan
         $klaarWeekCount = Taken::where('user_id', Auth::id())
             ->where('status', 'klaar')
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
-        //taken die niet af zijn
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())->where('status', 'klaar')->count();
+
+        // taken die niet af zijn
         $nietKlaarCount = Taken::where('user_id', Auth::id())
             ->where('status', 'niet klaar')
-            ->count()-1;
+            ->count();
 
-        
-        return view('dashboard', compact('taken', 'klaarWeekCount', 'gekozenBericht', 'gekozenKleur', 'nietKlaarCount'));
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        return view('dashboard', compact('taken', 'klaarWeekCount', 'gekozenBericht', 'gekozenKleur', 'nietKlaarCount', 'procentKlaar'));
 
     }
 }
