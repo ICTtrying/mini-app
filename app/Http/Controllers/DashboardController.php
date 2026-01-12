@@ -11,6 +11,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $succesBericht = null;
         if ($request->has('taak_id')) {
             $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
 
@@ -21,6 +22,7 @@ class DashboardController extends Controller
                     $taak->status = 'niet klaar';
                 }
                 $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
             }
         }
 
@@ -63,7 +65,7 @@ class DashboardController extends Controller
         // Format deadlines for each taak
         foreach ($taken as $taak) {
             if ($taak->deadline) {
-                $taak->deadline = \Carbon\Carbon::parse($taak->deadline)->format('Y-m-d');
+                $taak->deadline = \Carbon\Carbon::parse($taak->deadline)->format('d-m-Y');
             }
         }
         // alle taken die in de laatste week op klaar staan
@@ -86,8 +88,17 @@ class DashboardController extends Controller
         } else {
             $procentKlaar = 0;
         }
-
-        return view('dashboard', compact('taken', 'klaarWeekCount', 'gekozenBericht', 'gekozenKleur', 'nietKlaarCount', 'procentKlaar'));
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('dashboard', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
 
     }
 }

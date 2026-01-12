@@ -1,5 +1,39 @@
 <x-layouts.app :title="__('Dashboard')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+        @if($succesBericht)
+            <div class="text-center bg-green-700 border-white-500 font-bold px-4 py-3 rounded relative mb-4"
+                role="alert">
+                <span class="block sm:inline">{{ $succesBericht }}</span>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const alertBox = document.querySelector('[role="alert"]');
+                    if (alertBox) {
+                        setTimeout(() => {
+                            alertBox.style.display = 'none';
+                        }, 1500);
+                    }
+                });
+            </script>
+        @endif
+        @if(session('succesBerichtTaak'))
+            <div class="text-center bg-green-700 border-white-500 font-bold px-4 py-3 rounded relative mb-4"
+                role="alert">
+                <span class="block sm:inline">{{ session('succesBerichtTaak') }}</span>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const alertBox = document.querySelector('[role="alert"]');
+                    if (alertBox) {
+                        setTimeout(() => {
+                            alertBox.style.display = 'none';
+                        }, 4000);
+                    }
+                });
+            </script>
+        @endif
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <div style="box-shadow: 0 4px 15px 0 rgba(79, 70, 229, 0.5), 0 6px 20px 0 rgba(147, 51, 234, 0.4), 0 0 30px rgba(79, 70, 229, 0.3); height: 180px;"
                 class="relative overflow-hidden rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">

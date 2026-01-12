@@ -198,7 +198,7 @@ select:focus[data-flux-control] {
 }
 
 #dashboardTaskViewContainer {
-    height: 300px;
+    height: 380px;
     background-color: #3e3e3e;
     position: relative;
     width: 100%;
@@ -228,62 +228,10 @@ select:focus[data-flux-control] {
     border-color: #404040; /* neutral-700 */
 }
 
-#taakContainerKlaar {
-    position: relative;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid black;
-    background: linear-gradient(to bottom, #1d1a51 0%, #321151 100%);
-}
-
-#taakContainerNietKlaar {
-    opacity: 0.6;
-    position: relative;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid black;
-    background: linear-gradient(to bottom, #1d1a51 0%, #321151 100%);
-}
 
 
-/*niet klaar*/
-#taakContainerNietKlaar>#checkbox {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #4f46e5;
-    margin-right: 10px;
-    border-radius: 6px;
-    background: #2f2f2f;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    position: relative;
 
-}
-#taakContainerNietKlaar>#checkbox:checked {
-    background: #4f46e5;
-    border-color: #9333ea;
-}
-#taakContainerNietKlaar>#checkbox:checked::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 6px;
-    height: 12px;
-    border: solid #fff;
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
-}
 
-#taakContainerNietKlaar>#titel {
-    font-weight: bolder;
-    font-size: larger;
-    text-decoration: line-through;
-    text-decoration-thickness: 3px;
-}
 
 .taak-container {
     position: relative;
@@ -292,10 +240,18 @@ select:focus[data-flux-control] {
     border-radius: 10px;
     border: 1px solid black;
     background: linear-gradient(to bottom, #1d1a51 0%, #321151 100%);
+    box-shadow: 0 4px 4px 0 rgb(255, 0, 0);
+    
+}
+
+.taak-container:hover {
+    border: 3px solid rgb(0, 16, 59);
+    box-shadow: 0 0 0 0 rgb(255, 0, 0);
 }
 
 .taak-container.niet-klaar {
     opacity: 0.6;
+    box-shadow: 0 4px 4px 0 rgb(68, 255, 0);
 }
 
 .taak-container .checkbox {

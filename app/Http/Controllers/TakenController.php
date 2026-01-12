@@ -33,6 +33,6 @@ class TakenController extends Controller
             'prioriteit' => $validated['prioriteit'],
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Task created successfully.');
+        return redirect()->route('dashboard')->with('succesBerichtTaak', 'Taak succesvol aangemaakt.');
     }
 }
