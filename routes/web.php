@@ -27,9 +27,17 @@ Route::get('vandaag', [VandaagController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('vandaag');
 
+Route::post('vandaag', [VandaagController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkTaakVandaag');
+
 Route::get('week', [WeekController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('week');
+
+Route::post('week', [WeekController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkTaakWeek');
 
 Route::get('/takenMaken', [TakenController::class, 'index'])
         ->middleware(['auth', 'verified'])
