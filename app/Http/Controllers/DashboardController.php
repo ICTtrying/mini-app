@@ -62,12 +62,7 @@ class DashboardController extends Controller
             ->orderBy('deadline', 'asc')
             ->get();
 
-        // Format deadlines for each taak
-        foreach ($taken as $taak) {
-            if ($taak->deadline) {
-                $taak->deadline = \Carbon\Carbon::parse($taak->deadline)->format('d-m-Y');
-            }
-        }
+        -
         // alle taken die in de laatste week op klaar staan
         $klaarWeekCount = Taken::where('user_id', Auth::id())
             ->where('status', 'klaar')

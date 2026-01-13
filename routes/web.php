@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TakenController;
+use App\Http\Controllers\VandaagController;
+use App\Http\Controllers\WeekController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -21,17 +23,17 @@ Route::post('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('checkTaak');
 
-Route::view('Week', 'Week')
+Route::get('vandaag', [VandaagController::class, 'index'])
     ->middleware(['auth', 'verified'])
-    ->name('Week');
+    ->name('vandaag');
 
-Route::view('Alles', 'Alles')
+Route::get('week', [WeekController::class, 'index'])
     ->middleware(['auth', 'verified'])
-    ->name('Alles');
+    ->name('week');
 
 Route::get('/takenMaken', [TakenController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('takenMaken');
+        ->middleware(['auth', 'verified'])
+        ->name('takenMaken');
 
 Route::post('/takenCreate', [TakenController::class, 'create'])
     ->middleware(['auth', 'verified'])

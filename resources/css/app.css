@@ -228,11 +228,6 @@ select:focus[data-flux-control] {
     border-color: #404040; /* neutral-700 */
 }
 
-
-
-
-
-
 .taak-container {
     position: relative;
     margin-bottom: 20px;
