@@ -13,7 +13,7 @@
         @elseif ($theme === 'light')
             class="min-h-screen bg-white"
         @else
-            x-data="{ theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' }"
+            x-data="{ theme: 'light' }"
             :class="theme === 'dark' ? 'dark min-h-screen bg-zinc-800' : 'min-h-screen bg-white'" @endif
 @else x-data="{ theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' }"
     :class="theme === 'dark' ? 'dark min-h-screen bg-zinc-800' : 'min-h-screen bg-white'" @endif
