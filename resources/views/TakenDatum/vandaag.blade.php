@@ -38,7 +38,7 @@
             <div style="box-shadow: 0 4px 15px 0 rgba(79, 70, 229, 0.5), 0 6px 20px 0 rgba(147, 51, 234, 0.4), 0 0 30px rgba(79, 70, 229, 0.3); height: 180px;"
                 class="relative overflow-hidden rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
 
-                <h2 class="text-lg text-gray-200 font-bold">deze week af:</h2>
+                <h2 class="text-lg text-gray-500 dark:text-gray-100 font-bold">deze week af:</h2>
 
                 <p style="font-weight: bolder; font-size: 25px; margin-top: 10px;"><span
                         style="margin-right: 15px; font-size: 30px; color: {{ $klaarWeekCount == 0 ? 'rgb(255, 8, 8)' : 'rgb(37, 255, 8)' }}">{{ $klaarWeekCount }}</span>
@@ -57,7 +57,7 @@
 
             <div style="box-shadow: 0 4px 15px 0 rgba(79, 70, 229, 0.5), 0 6px 20px 0 rgba(147, 51, 234, 0.4), 0 0 30px rgba(79, 70, 229, 0.3); height: 180px;"
                 class="relative overflow-hidden rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
-                <h2 class="text-lg text-gray-200 font-bold">Openstaande taken</h2>
+                <h2 class="text-lg text-gray-500 dark:text-gray-100 font-bold">Openstaande taken</h2>
 
                 <p style="font-weight: bolder; font-size: 25px; margin-top: 10px;"><span
                         style="margin-right: 15px; font-size: 30px; color: {{ $nietKlaarCount > 5 ? 'rgb(255, 8, 8)' : ($nietKlaarCount >= 1 ? 'rgb(255, 165, 0)' : 'rgb(37, 255, 8)') }}">{{ $nietKlaarCount }}</span>
@@ -78,7 +78,7 @@
 
             <div style="box-shadow: 0 4px 15px 0 rgba(79, 70, 229, 0.5), 0 6px 20px 0 rgba(147, 51, 234, 0.4), 0 0 30px rgba(79, 70, 229, 0.3); height: 180px;"
                 class="relative overflow-hidden rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
-                <h2 class="text-lg text-gray-200 font-bold">Percentage voltooid:</h2>
+                <h2 class="text-lg text-gray-500 dark:text-gray-100 font-bold">Percentage voltooid:</h2>
 
                 <p style="font-weight: bolder; font-size: 25px; margin-top: 10px;"><span
                         style="margin-right: 15px; font-size: 30px;">{{ $procentKlaar }}% </span>
@@ -108,11 +108,11 @@
             </div>
         </div>
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div id="dashboardTaskViewContainer" class=" lg:col-span-2 md:col-span-2 col-span-1">
+            <div id="dashboardTaskViewContainer" class="bg-zinc-300 dark:bg-zinc-600 lg:col-span-2 md:col-span-2 col-span-1">
                 <h2>
-                    overzicht over uw taken:
+                    overzicht over uw taken voor vandaag:
                 </h2>
-                <form action="{{ route('checkTaakVandaag') }}">
+                <form action="{{ route('checkTaak') }}">
                     @csrf
 
                     @foreach ($taken as $taak)

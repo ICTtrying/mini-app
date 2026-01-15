@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body
+    @if (auth()->check()) @php
+            $theme = auth()->user()->theme ?? 'system';
+        @endphp
+        @if ($theme === 'dark')
+            class="dark min-h-screen bg-zinc-800"
+        @elseif ($theme === 'light')
+            class="min-h-screen bg-white"
+        @else
+            x-data="{ theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' }"
+            :class="theme === 'dark' ? 'dark min-h-screen bg-zinc-800' : 'min-h-screen bg-white'" @endif
+@else x-data="{ theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' }"
+    :class="theme === 'dark' ? 'dark min-h-screen bg-zinc-800' : 'min-h-screen bg-white'" @endif
+    >
     <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
@@ -16,7 +28,7 @@
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('filter')" class="grid">
                 <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                    wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    wire:navigate>{{ __('Alles') }}</flux:navlist.item>
 
                 <flux:navlist.item class="mb-3" :href="route('vandaag')" :current="request()->routeIs('vandaag')"
                     wire:navigate>{{ __('Vandaag') }}</flux:navlist.item>
@@ -138,7 +150,9 @@
 
     {{ $slot }}
 
+    @livewireScripts
     @fluxScripts
+
 </body>
 
 </html>

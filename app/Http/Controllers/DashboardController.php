@@ -62,8 +62,7 @@ class DashboardController extends Controller
             ->orderBy('deadline', 'asc')
             ->get();
 
-        -
-        // alle taken die in de laatste week op klaar staan
+        -// alle taken die in de laatste week op klaar staan
         $klaarWeekCount = Taken::where('user_id', Auth::id())
             ->where('status', 'klaar')
             ->where('updated_at', '>=', Carbon::now()->subWeek())
@@ -83,7 +82,13 @@ class DashboardController extends Controller
         } else {
             $procentKlaar = 0;
         }
-        
+
+        foreach ($taken as $taak) {
+            if ($taak->deadline) {
+                $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+            }
+        }
+
         // Always return the view, and pass $succesBericht if set
         return view('dashboard', [
             'taken' => $taken,
@@ -92,7 +97,7 @@ class DashboardController extends Controller
             'gekozenKleur' => $gekozenKleur,
             'nietKlaarCount' => $nietKlaarCount,
             'procentKlaar' => $procentKlaar,
-            'succesBericht' => $succesBericht ?? null
+            'succesBericht' => $succesBericht ?? null,
         ]);
 
     }
