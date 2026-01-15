@@ -101,4 +101,627 @@ class DashboardController extends Controller
         ]);
 
     }
+
+    public function vandaag(Request $request)
+
+    {
+        $succesBericht = null;
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
+        $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
+        $kleuren = [
+            'rgba(79, 70, 229, 0.5)',      // Indigo
+            'rgba(147, 51, 234, 0.5)',     // Paars
+            'rgba(52, 195, 52, 0.5)',      // Groen
+            'rgba(236, 72, 153, 0.5)',     // Roze
+            'rgba(14, 165, 233, 0.5)',     // Blauw
+            'rgba(245, 158, 11, 0.5)',     // Oranje
+            'rgba(20, 184, 166, 0.5)',     // Teal
+            'rgba(239, 68, 68, 0.5)',      // Rood
+        ];
+        $gekozenKleur = $kleuren[array_rand($kleuren)];
+        $gekozenBericht = $berichten[array_rand($berichten)];
+        // einde kleuren en berichten --------------------------------------------------
+
+        // alle taken
+        $taken = Taken::where('user_id', Auth::id())
+            ->where('deadline', '<=', Carbon::now()->startOfDay())
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
+
+        //
+        // alle taken die in de laatste week op klaar staan
+        $klaarWeekCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->where('deadline', '<=', Carbon::now()->startOfDay())
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
+            ->count();
+
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->where('deadline', '<=', Carbon::now()->startOfDay())
+            ->count();
+
+        // taken die niet af zijn
+        $nietKlaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'niet klaar')
+            ->where('deadline', '<=', Carbon::now()->startOfDay())
+            ->get()
+            ->count();
+
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        foreach ($taken as $taak) {
+        if ($taak->deadline) {
+            $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+        }
+    }
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('TakenDatum.vandaag', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
+    }
+
+    public function week(Request $request)
+    {
+        $succesBericht = null;
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
+        $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
+        $kleuren = [
+            'rgba(79, 70, 229, 0.5)',      // Indigo
+            'rgba(147, 51, 234, 0.5)',     // Paars
+            'rgba(52, 195, 52, 0.5)',      // Groen
+            'rgba(236, 72, 153, 0.5)',     // Roze
+            'rgba(14, 165, 233, 0.5)',     // Blauw
+            'rgba(245, 158, 11, 0.5)',     // Oranje
+            'rgba(20, 184, 166, 0.5)',     // Teal
+            'rgba(239, 68, 68, 0.5)',      // Rood
+        ];
+        $gekozenKleur = $kleuren[array_rand($kleuren)];
+        $gekozenBericht = $berichten[array_rand($berichten)];
+        // einde kleuren en berichten --------------------------------------------------
+
+        // alle taken
+        $start = Carbon::now()->startOfDay();
+        $end   = Carbon::now()->addWeek()->endOfDay();
+
+        $taken = Taken::where('user_id', Auth::id())
+            ->whereBetween('deadline', [$start, $end])
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
+
+        //
+        // alle taken die in de laatste week op klaar staan
+        $klaarWeekCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
+            ->count();
+
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->count();
+
+        // taken die niet af zijn
+        $nietKlaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'niet klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->get()
+            ->count();
+
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        foreach ($taken as $taak) {
+        if ($taak->deadline) {
+            $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+        }
+    }
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('TakenDatum.week', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
+
+    }
+
+    public function school(Request $request)
+    {
+        $succesBericht = null;
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
+        $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
+        $kleuren = [
+            'rgba(79, 70, 229, 0.5)',      // Indigo
+            'rgba(147, 51, 234, 0.5)',     // Paars
+            'rgba(52, 195, 52, 0.5)',      // Groen
+            'rgba(236, 72, 153, 0.5)',     // Roze
+            'rgba(14, 165, 233, 0.5)',     // Blauw
+            'rgba(245, 158, 11, 0.5)',     // Oranje
+            'rgba(20, 184, 166, 0.5)',     // Teal
+            'rgba(239, 68, 68, 0.5)',      // Rood
+        ];
+        $gekozenKleur = $kleuren[array_rand($kleuren)];
+        $gekozenBericht = $berichten[array_rand($berichten)];
+        // einde kleuren en berichten --------------------------------------------------
+
+        // alle taken
+        $start = Carbon::now()->startOfDay();
+        $end   = Carbon::now()->addWeek()->endOfDay();
+
+        $taken = Taken::where('user_id', Auth::id())
+            ->where('categorie', 'school')
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
+
+        //
+        // alle taken die in de laatste week op klaar staan
+        $klaarWeekCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
+            ->count();
+
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->count();
+
+        // taken die niet af zijn
+        $nietKlaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'niet klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->get()
+            ->count();
+
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        foreach ($taken as $taak) {
+        if ($taak->deadline) {
+            $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+        }
+    }
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('Takencategorie.school', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
+
+    }
+
+    public function werk(Request $request)
+    {
+        $succesBericht = null;
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
+        $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
+        $kleuren = [
+            'rgba(79, 70, 229, 0.5)',      // Indigo
+            'rgba(147, 51, 234, 0.5)',     // Paars
+            'rgba(52, 195, 52, 0.5)',      // Groen
+            'rgba(236, 72, 153, 0.5)',     // Roze
+            'rgba(14, 165, 233, 0.5)',     // Blauw
+            'rgba(245, 158, 11, 0.5)',     // Oranje
+            'rgba(20, 184, 166, 0.5)',     // Teal
+            'rgba(239, 68, 68, 0.5)',      // Rood
+        ];
+        $gekozenKleur = $kleuren[array_rand($kleuren)];
+        $gekozenBericht = $berichten[array_rand($berichten)];
+        // einde kleuren en berichten --------------------------------------------------
+
+        // alle taken
+        $start = Carbon::now()->startOfDay();
+        $end   = Carbon::now()->addWeek()->endOfDay();
+
+        $taken = Taken::where('user_id', Auth::id())
+            ->where('categorie', 'werk')
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
+
+        //
+        // alle taken die in de laatste week op klaar staan
+        $klaarWeekCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
+            ->count();
+
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->count();
+
+        // taken die niet af zijn
+        $nietKlaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'niet klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->get()
+            ->count();
+
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        foreach ($taken as $taak) {
+        if ($taak->deadline) {
+            $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+        }
+    }
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('Takencategorie.werk', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
+
+    }
+
+    public function sideProjecten(Request $request)
+    {
+        $succesBericht = null;
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
+        $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
+        $kleuren = [
+            'rgba(79, 70, 229, 0.5)',      // Indigo
+            'rgba(147, 51, 234, 0.5)',     // Paars
+            'rgba(52, 195, 52, 0.5)',      // Groen
+            'rgba(236, 72, 153, 0.5)',     // Roze
+            'rgba(14, 165, 233, 0.5)',     // Blauw
+            'rgba(245, 158, 11, 0.5)',     // Oranje
+            'rgba(20, 184, 166, 0.5)',     // Teal
+            'rgba(239, 68, 68, 0.5)',      // Rood
+        ];
+        $gekozenKleur = $kleuren[array_rand($kleuren)];
+        $gekozenBericht = $berichten[array_rand($berichten)];
+        // einde kleuren en berichten --------------------------------------------------
+
+        // alle taken
+        $start = Carbon::now()->startOfDay();
+        $end   = Carbon::now()->addWeek()->endOfDay();
+
+        $taken = Taken::where('user_id', Auth::id())
+            ->where('categorie', 'side-project')
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
+
+        //
+        // alle taken die in de laatste week op klaar staan
+        $klaarWeekCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
+            ->count();
+
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->count();
+
+        // taken die niet af zijn
+        $nietKlaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'niet klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->get()
+            ->count();
+
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        foreach ($taken as $taak) {
+        if ($taak->deadline) {
+            $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+        }
+    }
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('Takencategorie.side-projecten', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
+
+    }
+
+    public function prive(Request $request)
+    {
+        $succesBericht = null;
+        if ($request->has('taak_id')) {
+            $taak = Taken::where('user_id', Auth::id())->where('id', $request->input('taak_id'))->first();
+
+            if ($taak) {
+                if ($taak->status === 'niet klaar') {
+                    $taak->status = 'klaar';
+                } elseif ($taak->status === 'klaar') {
+                    $taak->status = 'niet klaar';
+                }
+                $taak->save();
+                $succesBericht = 'taak succesvol gewijzigd';
+            }
+        }
+
+        // kleuren en berichten --------------------------------------------------------
+        $berichten = ['Nice!', 'Goed gedaan!', 'Lekker bezig!', 'Perfect!', 'Je bent op dreef!', 'Fantastisch!'];
+        $kleuren = [
+            'rgba(79, 70, 229, 0.5)',      // Indigo
+            'rgba(147, 51, 234, 0.5)',     // Paars
+            'rgba(52, 195, 52, 0.5)',      // Groen
+            'rgba(236, 72, 153, 0.5)',     // Roze
+            'rgba(14, 165, 233, 0.5)',     // Blauw
+            'rgba(245, 158, 11, 0.5)',     // Oranje
+            'rgba(20, 184, 166, 0.5)',     // Teal
+            'rgba(239, 68, 68, 0.5)',      // Rood
+        ];
+        $gekozenKleur = $kleuren[array_rand($kleuren)];
+        $gekozenBericht = $berichten[array_rand($berichten)];
+        // einde kleuren en berichten --------------------------------------------------
+
+        // alle taken
+        $start = Carbon::now()->startOfDay();
+        $end   = Carbon::now()->addWeek()->endOfDay();
+
+        $taken = Taken::where('user_id', Auth::id())
+            ->where('categorie', 'prive')
+            ->orderByRaw("
+                            CASE status
+                                WHEN 'niet klaar' THEN 1
+                                WHEN 'klaar' THEN 2
+                                ELSE 3
+                            END
+                        ")
+            ->orderByRaw("
+                            CASE prioriteit
+                                WHEN 'hoog' THEN 3
+                                WHEN 'medium' THEN 2
+                                WHEN 'laag' THEN 1
+                                ELSE 0
+                            END DESC
+                        ")
+            ->orderBy('deadline', 'asc')
+            ->get();
+
+        //
+        // alle taken die in de laatste week op klaar staan
+        $klaarWeekCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->where('updated_at', '>=', Carbon::now()->subWeek())
+            ->count();
+
+        // alle taken die klaar zijn
+        $klaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->count();
+
+        // taken die niet af zijn
+        $nietKlaarCount = Taken::where('user_id', Auth::id())
+            ->where('status', 'niet klaar')
+            ->whereBetween('deadline', [$start, $end])
+            ->get()
+            ->count();
+
+        // % klaar
+        if ($taken->count() > 0) {
+            $procentKlaar = round($klaarCount / $taken->count() * 100);
+        } else {
+            $procentKlaar = 0;
+        }
+
+        foreach ($taken as $taak) {
+        if ($taak->deadline) {
+            $taak->deadline = Carbon::parse($taak->deadline)->format('d-m-Y');
+        }
+    }
+        
+        // Always return the view, and pass $succesBericht if set
+        return view('Takencategorie.prive', [
+            'taken' => $taken,
+            'klaarWeekCount' => $klaarWeekCount,
+            'gekozenBericht' => $gekozenBericht,
+            'gekozenKleur' => $gekozenKleur,
+            'nietKlaarCount' => $nietKlaarCount,
+            'procentKlaar' => $procentKlaar,
+            'succesBericht' => $succesBericht ?? null
+        ]);
+
+    }
+
+    
 }

@@ -23,21 +23,54 @@ Route::post('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('checkTaak');
 
-Route::get('vandaag', [VandaagController::class, 'index'])
+Route::get('vandaag', [DashboardController::class, 'vandaag'])
     ->middleware(['auth', 'verified'])
     ->name('vandaag');
 
-Route::post('vandaag', [VandaagController::class, 'index'])
+Route::post('vandaag', [DashboardController::class, 'vandaag'])
     ->middleware(['auth', 'verified'])
     ->name('checkTaakVandaag');
 
-Route::get('week', [WeekController::class, 'index'])
+Route::get('week', [DashboardController::class, 'week'])
     ->middleware(['auth', 'verified'])
     ->name('week');
 
-Route::post('week', [WeekController::class, 'index'])
+Route::post('week', [DashboardController::class, 'week'])
     ->middleware(['auth', 'verified'])
     ->name('checkTaakWeek');
+
+Route::get('school', [DashboardController::class, 'school'])
+    ->middleware(['auth', 'verified'])
+    ->name('school');
+
+Route::post('school', [DashboardController::class, 'school'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkTaakSchool');
+
+Route::get('werk', [DashboardController::class, 'werk'])
+    ->middleware(['auth', 'verified'])
+    ->name('werk');
+
+Route::post('werk', [DashboardController::class, 'werk'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkTaakWerk');
+
+Route::get('sideProjecten', [DashboardController::class, 'sideProjecten'])
+    ->middleware(['auth', 'verified'])
+    ->name('sideProjecten');
+
+Route::post('sideProjecten', [DashboardController::class, 'sideProjecten'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkTaakSideProjecten');
+
+Route::get('prive', [DashboardController::class, 'prive'])
+    ->middleware(['auth', 'verified'])
+    ->name('prive');
+
+Route::post('sideProjecten', [DashboardController::class, 'sideProjecten'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkTaakPrive');
+/*taken*/
 
 Route::get('/takenMaken', [TakenController::class, 'index'])
         ->middleware(['auth', 'verified'])

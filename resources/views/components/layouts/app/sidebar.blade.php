@@ -39,17 +39,17 @@
             </flux:navlist.group>
 
             <flux:navlist.group :heading="__('Catogorien')" class="grid">
-                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('School')"
+                <flux:navlist.item class="mb-3" :href="route('school')" :current="request()->routeIs('school')"
                     wire:navigate>{{ __('School') }}</flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('Werk')"
+                <flux:navlist.item class="mb-3" :href="route('werk')" :current="request()->routeIs('werk')"
                     wire:navigate>{{ __('Werk') }}</flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('dashboard')"
-                    :current="request()->routeIs('Side-projecten')" wire:navigate>{{ __('Side-projecten') }}
+                <flux:navlist.item class="mb-3" :href="route('sideProjecten')"
+                    :current="request()->routeIs('sideProjecten')" wire:navigate>{{ __('Side-projecten') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('dashboard')" :current="request()->routeIs('Privé')"
+                <flux:navlist.item class="mb-3" :href="route('prive')" :current="request()->routeIs('Prive')"
                     wire:navigate>{{ __('Privé') }}</flux:navlist.item>
             </flux:navlist.group>
 

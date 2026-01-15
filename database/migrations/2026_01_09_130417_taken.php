@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('titel');
             $table->text('omschrijving')->nullable();
             $table->dateTime('deadline')->nullable();
-            $table->enum('catogorie', ['school', 'werk', 'side-project', 'prive']);
+            $table->enum('categorie', ['school', 'werk', 'side-project', 'prive']);
             $table->enum('type', ['backend', 'frontend', 'fullStack', 'API', 'AI', 'database', 'devops', 'testing', 'design', 'documentation', 'anders'])->default('anders');
             $table->enum('status', ['niet klaar', 'klaar'])->default('niet klaar');
             $table->enum('prioriteit', ['laag', 'medium', 'hoog'])->default('medium');

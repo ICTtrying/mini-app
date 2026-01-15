@@ -14,11 +14,11 @@
         <small>je kan dit leeg laten als er geen deadline is</small><br>
         <input type="date" id="deadline" name="deadline"><br>
 
-        <label for="type" class="form-label">Catogorie</label>
-        <select name="type" id="type" class="form-select" required>
+        <label for="categorie" class="form-label">Categorie</label>
+        <select name="categorie" id="categorie" class="form-select" required>
             <option value="school" selected>School</option>
             <option value="werk">Werk</option>
-            <option value="side-projecten">Side-Projecten</option>
+            <option value="side-project">Side-Project</option>
             <option value="prive">privé</option>
         </select>
 

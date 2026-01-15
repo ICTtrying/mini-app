@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('Dashboard')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        @if ($succesBericht)
+        @if($succesBericht)
             <div class="text-center bg-green-700 border-white-500 font-bold px-4 py-3 rounded relative mb-4"
                 role="alert">
                 <span class="block sm:inline">{{ $succesBericht }}</span>
@@ -17,7 +17,7 @@
                 });
             </script>
         @endif
-        @if (session('succesBerichtTaak'))
+        @if(session('succesBerichtTaak'))
             <div class="text-center bg-green-700 border-white-500 font-bold px-4 py-3 rounded relative mb-4"
                 role="alert">
                 <span class="block sm:inline">{{ session('succesBerichtTaak') }}</span>
@@ -108,24 +108,19 @@
             </div>
         </div>
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div id="dashboardTaskViewContainer"
-                class="bg-zinc-300 dark:bg-zinc-600 lg:col-span-2 md:col-span-2 col-span-1">
+            <div id="dashboardTaskViewContainer" class="bg-zinc-300 dark:bg-zinc-600 lg:col-span-2 md:col-span-2 col-span-1">
                 <h2>
-                    overzicht over uw taken:
+                    overzicht over uw taken voor werk:
                 </h2>
                 <form action="{{ route('checkTaak') }}">
                     @csrf
-
 
                     @forelse ($taken as $taak)
                         <form action="{{ route('checkTaak') }}" method="POST" class="taak-form">
                             @csrf
                             <input type="hidden" name="taak_id" value="{{ $taak->id }}">
 
-                            <div @class([
-                                'taak-container',
-                                $taak->status === 'klaar' ? 'niet-klaar' : 'niet klaar',
-                            ])>
+                            <div @class(["taak-container", $taak->status === 'klaar' ? 'niet-klaar' : 'niet klaar'])>
                                 <input type="checkbox" class="checkbox" onchange="this.form.submit()"
                                     {{ $taak->status === 'klaar' ? 'checked' : '' }}>
 

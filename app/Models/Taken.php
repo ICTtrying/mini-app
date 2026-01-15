@@ -14,6 +14,7 @@ class Taken extends Model
         'titel',
         'omschrijving',
         'deadline',
+        'categorie',
         'type',
         'status',
         'prioriteit',
