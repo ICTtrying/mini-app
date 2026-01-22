@@ -63,16 +63,17 @@ class DashboardController extends Controller
             ->get();
 
         -// alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())->where('status', 'klaar')->count();
+        $klaarCount = ($taken)
+            ->where('status', 'klaar')->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
             ->count();
 
@@ -159,23 +160,19 @@ class DashboardController extends Controller
 
         //
         // alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
-            ->where('deadline', '<=', Carbon::now()->startOfDay())
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())
+        $klaarCount = ($taken)
             ->where('status', 'klaar')
-            ->where('deadline', '<=', Carbon::now()->startOfDay())
             ->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
-            ->where('deadline', '<=', Carbon::now()->startOfDay())
-            ->get()
             ->count();
 
         // % klaar
@@ -237,11 +234,9 @@ class DashboardController extends Controller
         // einde kleuren en berichten --------------------------------------------------
 
         // alle taken
-        $start = Carbon::now()->startOfDay();
-        $end   = Carbon::now()->addWeek()->endOfDay();
 
         $taken = Taken::where('user_id', Auth::id())
-            ->whereBetween('deadline', [$start, $end])
+            ->where('deadline', '<=', Carbon::now()->addWeek()->endOfDay())
             ->orderByRaw("
                             CASE status
                                 WHEN 'niet klaar' THEN 1
@@ -262,23 +257,19 @@ class DashboardController extends Controller
 
         //
         // alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())
+        $klaarCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
-            ->whereBetween('deadline', [$start, $end])
-            ->get()
             ->count();
 
         // % klaar
@@ -341,8 +332,6 @@ class DashboardController extends Controller
         // einde kleuren en berichten --------------------------------------------------
 
         // alle taken
-        $start = Carbon::now()->startOfDay();
-        $end   = Carbon::now()->addWeek()->endOfDay();
 
         $taken = Taken::where('user_id', Auth::id())
             ->where('categorie', 'school')
@@ -366,23 +355,20 @@ class DashboardController extends Controller
 
         //
         // alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
+            ->where('deadline', '<=', Carbon::now()->addWeek()->endOfDay())
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())
+        $klaarCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
-            ->whereBetween('deadline', [$start, $end])
-            ->get()
             ->count();
 
         // % klaar
@@ -445,9 +431,6 @@ class DashboardController extends Controller
         // einde kleuren en berichten --------------------------------------------------
 
         // alle taken
-        $start = Carbon::now()->startOfDay();
-        $end   = Carbon::now()->addWeek()->endOfDay();
-
         $taken = Taken::where('user_id', Auth::id())
             ->where('categorie', 'werk')
             ->orderByRaw("
@@ -470,23 +453,19 @@ class DashboardController extends Controller
 
         //
         // alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())
+        $klaarCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
-            ->whereBetween('deadline', [$start, $end])
-            ->get()
             ->count();
 
         // % klaar
@@ -549,9 +528,6 @@ class DashboardController extends Controller
         // einde kleuren en berichten --------------------------------------------------
 
         // alle taken
-        $start = Carbon::now()->startOfDay();
-        $end   = Carbon::now()->addWeek()->endOfDay();
-
         $taken = Taken::where('user_id', Auth::id())
             ->where('categorie', 'side-project')
             ->orderByRaw("
@@ -574,23 +550,19 @@ class DashboardController extends Controller
 
         //
         // alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())
+        $klaarCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
-            ->whereBetween('deadline', [$start, $end])
-            ->get()
             ->count();
 
         // % klaar
@@ -653,9 +625,6 @@ class DashboardController extends Controller
         // einde kleuren en berichten --------------------------------------------------
 
         // alle taken
-        $start = Carbon::now()->startOfDay();
-        $end   = Carbon::now()->addWeek()->endOfDay();
-
         $taken = Taken::where('user_id', Auth::id())
             ->where('categorie', 'prive')
             ->orderByRaw("
@@ -678,23 +647,19 @@ class DashboardController extends Controller
 
         //
         // alle taken die in de laatste week op klaar staan
-        $klaarWeekCount = Taken::where('user_id', Auth::id())
+        $klaarWeekCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->where('updated_at', '>=', Carbon::now()->subWeek())
             ->count();
 
         // alle taken die klaar zijn
-        $klaarCount = Taken::where('user_id', Auth::id())
+        $klaarCount = ($taken)
             ->where('status', 'klaar')
-            ->whereBetween('deadline', [$start, $end])
             ->count();
 
         // taken die niet af zijn
-        $nietKlaarCount = Taken::where('user_id', Auth::id())
+        $nietKlaarCount = ($taken)
             ->where('status', 'niet klaar')
-            ->whereBetween('deadline', [$start, $end])
-            ->get()
             ->count();
 
         // % klaar

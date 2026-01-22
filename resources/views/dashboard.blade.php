@@ -134,6 +134,8 @@
 
                                 @if ($taak->omschrijving)
                                     <small class="omschrijving">{{ $taak->omschrijving }}</small>
+                                @else
+                                    <small class="omschrijving"><br></small>
                                 @endif
 
                                 @if ($taak->deadline)
@@ -151,7 +153,7 @@
 
 
             <div style="height: 300px;"
-                class="relative overflow-hidden rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
+                class="relative overflow-y-scroll rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
                 <h2 class="text-lg text-gray-500 dark:text-gray-100 font-bold mb-2">Over de deadline</h2>
                 <ul class="list-disc pl-5">
                     @forelse($taken as $taak)

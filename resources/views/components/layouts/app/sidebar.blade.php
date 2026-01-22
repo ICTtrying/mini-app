@@ -49,7 +49,7 @@
                     :current="request()->routeIs('sideProjecten')" wire:navigate>{{ __('Side-projecten') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item class="mb-3" :href="route('prive')" :current="request()->routeIs('Prive')"
+                <flux:navlist.item class="mb-3" :href="route('prive')" :current="request()->routeIs('prive')"
                     wire:navigate>{{ __('Privé') }}</flux:navlist.item>
             </flux:navlist.group>
 

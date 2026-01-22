@@ -67,7 +67,7 @@ Route::get('prive', [DashboardController::class, 'prive'])
     ->middleware(['auth', 'verified'])
     ->name('prive');
 
-Route::post('sideProjecten', [DashboardController::class, 'sideProjecten'])
+Route::post('prive', [DashboardController::class, 'prive'])
     ->middleware(['auth', 'verified'])
     ->name('checkTaakPrive');
 /*taken*/

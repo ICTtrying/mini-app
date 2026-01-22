@@ -112,11 +112,8 @@
                 <h2>
                     overzicht over uw taken voor vandaag:
                 </h2>
-                <form action="{{ route('checkTaak') }}">
-                    @csrf
-
                     @forelse ($taken as $taak)
-                        <form action="{{ route('checkTaak') }}" method="POST" class="taak-form">
+                        <form action="{{ route('checkTaakVandaag') }}" method="POST" class="taak-form">
                             @csrf
                             <input type="hidden" name="taak_id" value="{{ $taak->id }}">
 
@@ -129,6 +126,8 @@
 
                                 @if ($taak->omschrijving)
                                     <small class="omschrijving">{{ $taak->omschrijving }}</small>
+                                @else
+                                    <small class="omschrijving"><br></small>
                                 @endif
 
                                 @if ($taak->deadline)
@@ -139,20 +138,18 @@
                     @empty
                         <p class="text-center text-red-400 font-bold text-xl">Geen taken gevonden.</p>
                     @endforelse
-
-                </form>
             </div>
 
 
 
             <div style="height: 300px;"
-                class="relative overflow-hidden rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
+                class="relative overflow-y-scroll rounded-xl border p-5 border-neutral-200 dark:border-neutral-700">
                 <h2 class="text-lg text-gray-500 dark:text-gray-100 font-bold mb-2">Over de deadline</h2>
                 <ul class="list-disc pl-5">
                     @forelse($taken as $taak)
                         @if ($taak->deadline && \Carbon\Carbon::parse($taak->deadline)->isPast() && $taak->status !== 'klaar')
                             <li class="mb-2 border-2 p-2 rounded-2xl">
-                                <form action="{{ route('checkTaak') }}" method="POST" style="display: flex; align-items: center; gap: 10px;">
+                                <form action="{{ route('checkTaakVandaag') }}" method="POST" style="display: flex; align-items: center; gap: 10px;">
                                     @csrf
 
                                     <input type="hidden" name="taak_id" value="{{ $taak->id }}">
