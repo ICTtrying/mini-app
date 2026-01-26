@@ -8,6 +8,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
+use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -79,6 +80,16 @@ Route::get('/takenMaken', [TakenController::class, 'index'])
 Route::post('/takenCreate', [TakenController::class, 'create'])
     ->middleware(['auth', 'verified'])
     ->name('taken.create');
+
+Route::get('/taken/update/{id}', [TakenController::class, 'updatePage'])
+->middleware('auth', 'verified');
+
+Route::put('/taken/update/{id}', [TakenController::class, 'update'])
+->middleware('auth', 'verified')
+->Name('taken.update');
+
+Route::get('/taken/delete/{id}', [TakenController::class, 'delete'])
+->middleware('auth', 'verified');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

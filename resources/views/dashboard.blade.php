@@ -130,7 +130,11 @@
                                     {{ $taak->status === 'klaar' ? 'checked' : '' }}>
 
                                 <span class="titel">{{ $taak->titel }}</span>
+
                                 <span class="type">{{ $taak->type }}</span><br>
+                                
+                                <a class="deleteBTN float-right" href="/taken/delete/{{ $taak->id }}" onclick="return confirm('Weet je zeker dat je deze taak wilt verwijderen?');"></a>
+                                <a class="updateBTN float-right" href="/taken/update/{{ $taak->id }}"></a>
 
                                 @if ($taak->omschrijving)
                                     <small class="omschrijving">{{ $taak->omschrijving }}</small>

@@ -325,6 +325,44 @@ select:focus[data-flux-control] {
     right: 10px;
 }
 
+.updateBTN {
+    position: relative;
+    top: -20px;
+    right: 70px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: url('https://www.freeiconspng.com/uploads/edit-editor-pen-pencil-write-icon--4.png') center/60% no-repeat, #748eff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 6px 0 rgba(239, 68, 68, 0.15);
+}
+.updateBTN:hover {
+    background-color: #e0e7ff;
+    box-shadow: 0 4px 12px 0 rgba(222, 222, 222, 0.25);
+}
+
+.deleteBTN {
+    position: relative;
+    top: -20px;
+    right: 50px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: url('https://www.freeiconspng.com/uploads/recycle-bin-icon-25.png') center/60% no-repeat, red;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 6px 0 rgba(239, 68, 68, 0.15);
+}
+.deleteBTN:hover {
+    background-color: #fecaca;
+    box-shadow: 0 4px 12px 0 rgba(239, 68, 68, 0.25);
+}
+
 
 
 @media (max-width: 550px) {
